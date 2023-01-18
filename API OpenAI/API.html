@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script>
+      // Function to send a request to the API and display the response
+      function sendRequest() {
+        // Get the user's question
+        var question = document.getElementById("question").value;
+
+        // Your API key
+        var apiKey = "YOUR_API_KEY";
+
+        // The API endpoint
+        var endpoint = "https://api.openai.com/v1/engines/davinci/completions";
+
+        // The request data
+        var data = {
+          "prompt": question,
+          "max_tokens": 100,
+          "stop": "."
+        }
+
+        // Fetch the API response
+        fetch(endpoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + apiKey
+          },
+          body: JSON.stringify(data)
+        })
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function(data) {
+          // Display the response in the HTML
+          document.getElementById("response").innerHTML = data.choices[0].text;
+        })
+        .catch(function(error) {
+          console.error(error);
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Chat with GPT</h1>
+    <input type="text" id="question" placeholder="Ask me anything...">
+    <button onclick="sendRequest()">Send</button>
+    <p id="response"></p>
+  </body>
+</html>
